@@ -55,6 +55,7 @@ namespace Application.Catalog.Products
                 TotalRecord = totalRow,
                 Items = data,
             };
+
             return pagedResult;
         }
     }
