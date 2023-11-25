@@ -1,8 +1,9 @@
-﻿using Data.EF;
+﻿using Azure.Core;
+using Data.EF;
 using Microsoft.EntityFrameworkCore;
 using ViewModels.Catalog.Products;
-using ViewModels.Catalog.Products.Public;
 using ViewModels.Common;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Catalog.Products
 {
@@ -13,7 +14,35 @@ namespace Application.Catalog.Products
         {
             _context = context;
         }
-        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetProductPagingRequest request)
+        public async Task<List<ProductViewModel>> GetAll()
+        {
+            var query = from p in _context.Products
+                        join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
+                        join pic in _context.ProductInCategories on p.ProductId equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.CategoryId
+                        select new { p, pt, pic };
+
+            var data = await query.Select(x => new ProductViewModel()
+                {
+                    ProductId = x.p.ProductId,
+                    Name = x.pt.Name,
+                    CreatedDate = x.p.CreatedDate,
+                    Description = x.pt.Description,
+                    Details = x.pt.Details,
+                    LanguageId = x.pt.LanguageId,
+                    OriginalPrice = x.p.OriginalPrice,
+                    Price = x.p.Price,
+                    SeoAlias = x.pt.SeoAlias,
+                    SeoDescription = x.pt.SeoDescription,
+                    SeoTitle = x.pt.SeoTitle,
+                    Stock = x.p.Stock,
+                    ViewCount = x.p.ViewCount,
+                    updateDate = (DateTime)x.p.updateDate,
+                }).ToListAsync();
+            return data;
+        }
+
+        public async Task<PagedResult<ProductViewModel>> GetAllByCategoryId(GetPublicProductPagingRequest request)
         {
             var query = from p in _context.Products
                         join pt in _context.ProductTranslations on p.ProductId equals pt.ProductId
@@ -55,7 +84,6 @@ namespace Application.Catalog.Products
                 TotalRecord = totalRow,
                 Items = data,
             };
-
             return pagedResult;
         }
     }

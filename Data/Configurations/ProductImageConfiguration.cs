@@ -16,7 +16,7 @@ namespace Data.Configurations
             builder.ToTable("ProductImages");
             builder.HasKey(x => x.ProductImageId);
             builder.Property(x => x.ProductImageId).UseIdentityColumn();
-            builder.Property(x => x.imagePath).HasMaxLength(300).IsRequired(true);
+            builder.Property(x => x.ImagePath).HasMaxLength(300).IsRequired(true);
             builder.Property(x => x.Caption).HasMaxLength(200);
             builder.HasOne(x => x.Product).WithMany(x => x.ProductImages).HasForeignKey(x => x.ProductId);
 

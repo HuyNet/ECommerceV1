@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Common;
 
-namespace ViewModels.Catalog.Products.Private
+namespace ViewModels.Catalog.Products
 {
-    public class GetProductPagingRequest : PagingRequestBase
+    public class GetPrivateProductPagingRequest : PagingRequestBase
     {
         public string Keywork { get; set; }
         public List<int> CategoryIds { get; set; }
