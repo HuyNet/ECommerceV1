@@ -1,6 +1,7 @@
 using Application.Catalog.Products;
 using Data.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Utilities.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,12 @@ builder.Services.AddDbContext<ECommerceDbContext>(options =>
 
 //derlare DI
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger ECommerce", Version = "v1" });
+});
+
 
 var app = builder.Build();
 
@@ -29,6 +36,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger ECommerce V1");
+    });
 
 app.MapControllerRoute(
     name: "default",
