@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using ViewModels.Catalog.Products;
-using ViewModels.Catalog.Products.Private;
 using ViewModels.Common;
 
 namespace Application.Catalog.Products
@@ -13,7 +12,7 @@ namespace Application.Catalog.Products
         Task<bool> UpdatePrice(int productId, decimal newPrice);
         Task<bool> UpdateStock(int productId, int addQuantity);
         Task AddViewCount(int productId);
-        Task<PagedResult<ProductViewModel>> GetAllPagding(GetProductPagingRequest request);
+        Task<PagedResult<ProductViewModel>> GetAllPagding(GetPrivateProductPagingRequest request);
         Task<int> AddImages(int productId, ProductImageCreateRequest request);
         Task<int> UpdateImages(int imageId, ProductImageUpdateRequest request);
         Task<int> DeleteImages(int imageId);

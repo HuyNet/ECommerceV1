@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ViewModels.Catalog.Products.Private
+namespace ViewModels.Catalog.Products
 {
     public class ProductCreateRequest
     {
@@ -21,6 +21,6 @@ namespace ViewModels.Catalog.Products.Private
         public string SeoTitle { set; get; }
         public string LanguageId { set; get; }
         public string SeoAlias { get; set; }
-        public IFormFile  Thumbnailimage { set; get; }
+        public IFormFile Thumbnailimage { set; get; }
     }
 }
