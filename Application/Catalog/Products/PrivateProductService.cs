@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Http.Headers;
 using Utilities.Exceptions;
 using ViewModels.Catalog.Products;
-using ViewModels.Catalog.Products.Private;
 using ViewModels.Common;
 using Application.Common;
 using Microsoft.Data.SqlClient;
@@ -92,7 +91,7 @@ namespace Application.Catalog.Products
 
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPagding(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPagding(GetPrivateProductPagingRequest request)
         {
             //1.join
             var query = from p in _context.Products
