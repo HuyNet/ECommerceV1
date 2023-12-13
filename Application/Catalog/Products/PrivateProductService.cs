@@ -73,7 +73,8 @@ namespace Application.Catalog.Products
                 };
             }
             _context.Products.Add(product);
-            return await _context.SaveChangesAsync();
+             await _context.SaveChangesAsync();
+            return product.ProductId;
         }
 
         public async Task<int> Delete(int productId)
@@ -265,6 +266,11 @@ namespace Application.Catalog.Products
                     ProductId = i.ProductId,
                     SortOrder = i.SortOrder
                 }).ToListAsync();
+        }
+
+        public Task<ProductViewModel> GetById(int productId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
