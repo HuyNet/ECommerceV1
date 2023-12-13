@@ -1,4 +1,5 @@
 using Application.Catalog.Products;
+using Application.Common;
 using Data.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<ECommerceDbContext>(options =>
 
 //derlare DI
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
+builder.Services.AddTransient<IPrivateProductService, PrivateProductService>();
+builder.Services.AddTransient<IStorageService, FileStorageService>();
 
 builder.Services.AddSwaggerGen(c =>
 {
