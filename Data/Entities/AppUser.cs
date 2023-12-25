@@ -12,7 +12,6 @@ namespace Data.Entities
         public string FisrtName { get; set; }
         public string LastName { get; set; }
         public DateTime BOD { get; set; }
-
         public List<Cart> Carts { get; set; }
         public List<Order> Orders { get; set; }
 
