@@ -164,7 +164,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 //app.UseIdentityServer();
-app.UseAuthorization();
+app.UseAuthentication();
 
 app.UseRouting();
 
