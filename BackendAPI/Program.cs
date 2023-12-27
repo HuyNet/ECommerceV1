@@ -7,6 +7,7 @@ using Data.IdentityService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Utilities.Constants;
@@ -124,9 +125,11 @@ builder.Services.AddSwaggerGen(c =>
 
 });
 
-string issuer = builder.Configuration.GetValue<string>("Tokens:Issuer");
-string signingKey = builder.Configuration.GetValue<string>("Tokens:Key");
-byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
+//string issuer = builder.Configuration.GetValue<string>("Tokens:Issuer");
+//string signingKey = builder.Configuration.GetValue<string>("Tokens:Key");
+//string issuer = builder.Configuration["Tokens:Issuer"];
+//string signingKey = builder.Configuration["Tokens:Key"];
+//byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
 
 builder.Services.AddAuthentication(opt =>
     {
@@ -136,17 +139,26 @@ builder.Services.AddAuthentication(opt =>
     {
         options.RequireHttpsMetadata = false;
         options.SaveToken = true;
-        options.TokenValidationParameters = new TokenValidationParameters()
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
         {
             ValidateIssuer = true,
-            ValidIssuer=issuer,
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
             ValidateAudience= true,
-            ValidAudience=issuer,
+            ValidAudience= builder.Configuration["JWT:ValidAudience"],
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             ClockSkew=System.TimeSpan.Zero,
-            IssuerSigningKey=new SymmetricSecurityKey(signingKeyBytes)
+            IssuerSigningKey=new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
 
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                // Ghi log thông tin chi tiết về lỗi xác thực
+                Console.WriteLine(context.Exception);
+                return Task.CompletedTask;
+            }
         };
     });
 
