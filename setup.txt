@@ -37,6 +37,8 @@ Microsoft.Extensions.Hosting 7.0.1
 ---Swagger----
 Swashbuckle.AspNetCore 6.5.0
 
+FluentValidation.AspNetCore 11.3.0
+
 
 -----Note ------
 When getting the source, deploy clean the Migration file, and then add the database.

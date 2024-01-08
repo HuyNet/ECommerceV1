@@ -4,6 +4,8 @@ using Application.Common.System.Users;
 using Data.EF;
 using Data.Entities;
 using Data.IdentityService;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Utilities.Constants;
+using ViewModels.System.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +62,11 @@ builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddTransient<IUserService, UserService>();
+  //builder.Services.AddTransient<IValidator<LoginRequest>,LoginRequestValidator>();
+
+// add service library FluentValition
+builder.Services.AddControllers()
+    .AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
 builder.Services.AddControllers();
 
