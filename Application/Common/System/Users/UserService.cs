@@ -40,13 +40,14 @@ namespace Application.Common.System.Users
             {
                 new Claim(ClaimTypes.Email,user.Email),
                 new Claim(ClaimTypes.GivenName,user.FisrtName),
-                new Claim(ClaimTypes.Role,string.Join(";",roles))
+                new Claim(ClaimTypes.Role,string.Join(";",roles)),
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
+            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha256Signature);
 
-            var token = new JwtSecurityToken(_config["Token:Issuer"],
-                _config["Token:Issuer"],
+            var token = new JwtSecurityToken(
+                issuer: _config["JWT:ValidIssuer"],
+                audience:_config["JWT:ValidAudience"],
                 claim,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);

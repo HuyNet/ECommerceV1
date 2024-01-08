@@ -8,7 +8,7 @@ namespace ViewModels.System.Users
 {
     public class RegisterRequest
     {
-        public string FisrtName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BOD { get; set; }
         public string Email { get; set; }

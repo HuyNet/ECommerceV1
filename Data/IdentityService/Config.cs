@@ -71,26 +71,26 @@ namespace Data.IdentityService
                         "api1"
                     }
                  },
-                //new Client
-                //{
-                //    ClientId = "swagger",
-                //    ClientName = "Swagger Client",
+                new Client
+                {
+                    ClientId = "swagger",
+                    ClientName = "Swagger Client",
 
-                //    AllowedGrantTypes = GrantTypes.Implicit,
-                //    AllowAccessTokensViaBrowser = true,
-                //    RequireConsent = false,
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowAccessTokensViaBrowser = true,
+                    RequireConsent = false,
 
-                //    RedirectUris =           { "https://localhost:5000/swagger/oauth2-redirect.html" }, // chuyển hướng
-                //    PostLogoutRedirectUris = { "https://localhost:5000/swagger/oauth2-redirect.html" },// chuyển hướng đăng xuất
-                //    AllowedCorsOrigins =     { "https://localhost:5000" }, // cho phép nguồn gốc cores
+                    RedirectUris =           { "https://localhost:7217/swagger/oauth2-redirect.html" }, // chuyển hướng
+                    PostLogoutRedirectUris = { "https://localhost:7217/swagger/oauth2-redirect.html" },// chuyển hướng đăng xuất
+                    AllowedCorsOrigins =     { "https://localhost:7217" }, // cho phép nguồn gốc cores
 
-                //    AllowedScopes = new List<string>
-                //    {
-                //        IdentityServerConstants.StandardScopes.OpenId,
-                //        IdentityServerConstants.StandardScopes.Profile,
-                //        "api.WebApp"
-                //    }
-                //},
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api1"
+                    }
+                },
 
             };
     }
