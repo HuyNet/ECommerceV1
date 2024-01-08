@@ -4,10 +4,16 @@ using Application.Common.System.Users;
 using Data.EF;
 using Data.Entities;
 using Data.IdentityService;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Utilities.Constants;
+using ViewModels.System.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,8 +35,8 @@ builder.Services.AddIdentityServer(options =>
         options.Events.RaiseFailureEvents = true;
         options.Events.RaiseSuccessEvents = true;
 
-    }) .AddInMemoryApiResources(Config.GetApiResources) // bên folder IdentityServer thêm Config
-                                                   // .AddInMemoryClients(Configuration.GetSection("IdentityServer:Clients"))
+    }).AddInMemoryApiResources(Config.GetApiResources) // bên folder IdentityServer thêm Config
+                                                       // .AddInMemoryClients(Configuration.GetSection("IdentityServer:Clients"))
     .AddInMemoryClients(Config.Clients) // lấy ra các client
     .AddInMemoryIdentityResources(Config.GetIdentityResources)
     .AddInMemoryApiScopes(Config.ApiScopes)
@@ -38,14 +44,14 @@ builder.Services.AddIdentityServer(options =>
     .AddDeveloperSigningCredential();
 
 
-    //builder.Services.AddTransient<IEmailSender, EmailSenderService>();
+//builder.Services.AddTransient<IEmailSender, EmailSenderService>();
 
-    //builder.Services.AddAuthentication()
-    // .AddLocalApi("Bearer", option =>
-    // {
-    //     option.ExpectedScope = "api.WebApp";
-    // }
-    // );
+//builder.Services.AddAuthentication()
+// .AddLocalApi("Bearer", option =>
+// {
+//     option.ExpectedScope = "api.WebApp";
+// }
+// );
 
 
 //derlare DI
@@ -56,12 +62,113 @@ builder.Services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddTransient<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddTransient<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddTransient<IUserService, UserService>();
+  //builder.Services.AddTransient<IValidator<LoginRequest>,LoginRequestValidator>();
 
+// add service library FluentValition
+builder.Services.AddControllers()
+    .AddFluentValidation(x=>x.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
+
+builder.Services.AddControllers();
 
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Swagger ECommerce", Version = "v1" });
+
+
+    ////add authorization identityservice4 to swagger
+    //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    //{ 
+    //    Type=SecuritySchemeType.OAuth2,
+    //    Flows = new OpenApiOAuthFlows
+    //    {
+    //        Implicit = new OpenApiOAuthFlow
+    //        {
+    //            AuthorizationUrl = new Uri(builder.Configuration["AuthorityUrl"] + "/connect/authorize"),
+    //            Scopes = new Dictionary<string, string> { { "api1", "ManageBrans APIs"} }
+    //        },
+    //    },
+    //});
+    //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    //{
+    //    {
+    //        new OpenApiSecurityScheme
+    //        {
+    //            Reference = new OpenApiReference{Type = ReferenceType.SecurityScheme,Id = "Bearer"}
+    //        },
+    //        new List<string>{ "api1" }
+    //    }
+    //});
+
+
+
+    //add authorization indentity to swagger
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        //// add authorization indentity
+        Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    {
+         {
+            new OpenApiSecurityScheme
+              {
+               Reference = new OpenApiReference
+               {
+                Type = ReferenceType.SecurityScheme,
+                 Id = "Bearer"
+               },
+               Scheme = "oauth2",
+               Name = "Bearer",
+               In = ParameterLocation.Header,
+            },
+            new List<string>()
+         }
+    });
+
 });
+
+//string issuer = builder.Configuration.GetValue<string>("Tokens:Issuer");
+//string signingKey = builder.Configuration.GetValue<string>("Tokens:Key");
+//string issuer = builder.Configuration["Tokens:Issuer"];
+//string signingKey = builder.Configuration["Tokens:Key"];
+//byte[] signingKeyBytes = System.Text.Encoding.UTF8.GetBytes(signingKey);
+
+builder.Services.AddAuthentication(opt =>
+    {
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.SaveToken = true;
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidateAudience= true,
+            ValidAudience= builder.Configuration["JWT:ValidAudience"],
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew=System.TimeSpan.Zero,
+            IssuerSigningKey=new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigningKey"]))
+
+        };
+        options.Events = new JwtBearerEvents
+        {
+            OnAuthenticationFailed = context =>
+            {
+                // Ghi log thông tin chi tiết về lỗi xác thực
+                Console.WriteLine(context.Exception);
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 
 var app = builder.Build();
@@ -76,8 +183,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseIdentityServer();
-app.UseAuthorization();
+//app.UseIdentityServer();
+app.UseAuthentication();
 
 app.UseRouting();
 
@@ -92,11 +199,14 @@ app.UseAuthorization();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
     {
+        //c.OAuthClientId("swagger");
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger ECommerce V1");
     });
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/{id?}");
+    });
 app.Run();

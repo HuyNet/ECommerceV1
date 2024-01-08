@@ -1,5 +1,6 @@
 ﻿using Application.Catalog.Products;
 using Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ViewModels.Catalog.Products;
@@ -8,6 +9,7 @@ namespace BackendAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]//Authorize : authentication is required to use A
     public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
