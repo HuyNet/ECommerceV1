@@ -81,7 +81,7 @@ namespace Data.EF
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "Hc0811!@#"),
                 SecurityStamp = string.Empty,
-                FisrtName = "A",
+                FirstName = "A",
                 LastName = "Kai",
                 BOD = new DateTime(1990,01,01)
             });

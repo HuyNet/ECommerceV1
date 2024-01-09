@@ -9,7 +9,7 @@ namespace Data.Entities
 {
     public class AppUser :IdentityUser<Guid>
     {
-        public string FisrtName { get; set; }
+        public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime BOD { get; set; }
         public List<Cart> Carts { get; set; }

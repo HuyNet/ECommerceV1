@@ -39,7 +39,7 @@ namespace Application.Common.System.Users
             var claim = new[]
             {
                 new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.GivenName,user.FisrtName),
+                new Claim(ClaimTypes.GivenName,user.FirstName),
                 new Claim(ClaimTypes.Role,string.Join(";",roles)),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWT:SigningKey"]));
@@ -60,7 +60,7 @@ namespace Application.Common.System.Users
             {
                 BOD = request.BOD,
                 Email=request.Email,
-                FisrtName=request.FisrtName,
+                FirstName = request.FirstName,
                 LastName=request.LastName,
                 UserName=request.UserName,
                 PhoneNumber =request.PhoneNumber,                

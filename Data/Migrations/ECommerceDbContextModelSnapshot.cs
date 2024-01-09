@@ -103,7 +103,7 @@ namespace Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FisrtName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -156,7 +156,7 @@ namespace Data.Migrations
                             ConcurrencyStamp = "9e006118-4b8a-4e19-b0d1-fd7d1213b354",
                             Email = "raiberkit131415@gmail.com",
                             EmailConfirmed = true,
-                            FisrtName = "A",
+                            FirstName = "A",
                             LastName = "Kai",
                             LockoutEnabled = false,
                             NormalizedEmail = "sraiberkit131415@gmail.com",
