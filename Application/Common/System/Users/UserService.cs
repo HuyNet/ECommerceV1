@@ -58,7 +58,7 @@ namespace Application.Common.System.Users
         {
             var user = new AppUser
             {
-                BOD = request.BOD,
+                DOB = request.DOB,
                 Email=request.Email,
                 FirstName = request.FirstName,
                 LastName=request.LastName,
