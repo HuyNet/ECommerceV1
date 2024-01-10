@@ -19,18 +19,18 @@ namespace BackendAPI.Controllers
 
         [HttpPost("authenticate")]
         [AllowAnonymous]// AllowAnonymous: Allows access without logging in
-        public async Task<IActionResult> Authenticate([FromForm]LoginRequest request)
+        public async Task<IActionResult> Authenticate([FromForm] LoginRequest request)
         {
-            if(!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var resultToken = await _userService.Authenticated(request);
-            if (string.IsNullOrEmpty(resultToken)) 
+            if (string.IsNullOrEmpty(resultToken))
             {
                 return BadRequest("Username of password is incorrect");
             }
-            return Ok(new {Token=resultToken});
+            return Ok(new { Token = resultToken });
         }
 
         [HttpPost("register")]
