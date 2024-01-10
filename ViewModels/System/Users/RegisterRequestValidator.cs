@@ -17,7 +17,7 @@ namespace ViewModels.System.Users
             RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required")
                 .MinimumLength(200).WithMessage("Last name is at least 200 characters");
 
-            RuleFor(x=>x.BOD).GreaterThan(DateTime.Now.AddYears(-100)).WithMessage("Birthday cannot greater than 100 years");
+            RuleFor(x=>x.DOB).GreaterThan(DateTime.Now.AddYears(-100)).WithMessage("Birthday cannot greater than 100 years");
 
             RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required")
                 .Matches(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$")

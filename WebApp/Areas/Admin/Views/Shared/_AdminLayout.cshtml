@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Admin] @ViewData["Title"] - WebApp</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700,800&display=swap" rel="stylesheet">
+    <link href="~/adminassets/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/adminassets/assets/plugins/font-awesome/css/all.min.css" rel="stylesheet">
+    <link href="~/adminassets/assets/plugins/perfectscroll/perfect-scrollbar.css" rel="stylesheet">
+    <link href="~/adminassets/assets/plugins/apexcharts/apexcharts.css" rel="stylesheet">
+
+
+    <!-- Theme Styles -->
+    <link href="~/adminassets/assets/css/main.min.css" rel="stylesheet">
+    <link href="~/adminassets/assets/css/custom.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="page-container">
+
+        @await Html.PartialAsync("_NavBar")
+        @RenderBody()
+
+        <!-- Javascripts -->
+        <script src="~/adminassets/assets/plugins/jquery/jquery-3.4.1.min.js"></script>
+        @* <script src="https://unpkg.com/@popperjs/core@2"></script> *@
+        <script src="~/adminassets/assets/plugins/popper/popper.min.js"></script>
+        <script src="~/adminassets/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/feather-icons"></script>
+        <script src="~/adminassets/assets/plugins/perfectscroll/perfect-scrollbar.min.js"></script>
+        <script src="~/adminassets/assets/plugins/apexcharts/apexcharts.min.js"></script>
+        <script src="~/adminassets/assets/js/main.min.js"></script>
+        <script src="~/adminassets/assets/js/pages/dashboard.js"></script>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

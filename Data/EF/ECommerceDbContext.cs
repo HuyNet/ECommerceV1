@@ -83,7 +83,7 @@ namespace Data.EF
                 SecurityStamp = string.Empty,
                 FirstName = "A",
                 LastName = "Kai",
-                BOD = new DateTime(1990,01,01)
+                DOB = new DateTime(1990,01,01)
             });
 
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
