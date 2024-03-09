@@ -23,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\AdminAssets\assets\plugins\idle-timer\jquery-idletimer.sln" />
   </ItemGroup>
 
