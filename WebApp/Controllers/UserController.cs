@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ViewModels.System.Users;
-using WebApp.Services;
 
 namespace WebApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IUserApiClient _userApiClient;
-        public UserController(IUserApiClient userApiClient) 
-        { 
-            _userApiClient = userApiClient;
-        }
 
         public IActionResult Index()
         {
